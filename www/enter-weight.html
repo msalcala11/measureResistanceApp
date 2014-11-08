@@ -1,0 +1,45 @@
+    <style>
+      .input-container {
+        margin: auto;
+        position: absolute;
+        top: 0; left: 0; bottom: 0; right: 0;
+        height: 180px;
+        width: 250px;
+      }
+
+      .measure-button {
+        position: fixed; 
+        bottom: 0px; 
+        width: 100%; 
+        padding: 10px 20px;
+      }
+
+      .app-title {
+        color: rgb(53, 188, 228); 
+        text-align:center; 
+        margin-top: 30px!important; 
+        font-size:24px;
+      }
+    </style>
+
+    <h1 class="title app-title">
+      <span style="font-weight:200;">Fat</span>Analyzer
+    </h1>
+
+    <div class="input-container"
+      <div class="list list-inset">
+        <label class="item item-input">
+          <i class="icon ion-ios7-timer-outline placeholder-icon"></i>
+          <input type="number" placeholder="Enter weight in grams">
+        </label>
+        <div style="color: white; margin-top:20px;"><span ui-sref='home'>cancel</span></div>
+      </div>
+    </div>
+
+    
+
+    <div class="measure-button">
+      <button class="button button-block button-balanced" ui-sref="test">
+      START
+      </button>
+    </div>
