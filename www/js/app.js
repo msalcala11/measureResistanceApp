@@ -102,61 +102,56 @@ angular.module('starter', ['ionic'])
   enterWeightStr += "    <\/div>";
   enterWeightStr += "";
 
-var measuringStr="";
-measuringStr += "    <style>";
-measuringStr += "      .input-container {";
-measuringStr += "        margin: auto;";
-measuringStr += "        position: absolute;";
-measuringStr += "        top: 0; left: 0; bottom: 0; right: 0;";
-measuringStr += "        height: 100px;";
-measuringStr += "        width: 250px;";
-measuringStr += "      }";
-measuringStr += "";
-measuringStr += "      .measure-button {";
-measuringStr += "        position: fixed; ";
-measuringStr += "        bottom: 0px; ";
-measuringStr += "        width: 100%; ";
-measuringStr += "        padding: 10px 20px;";
-measuringStr += "      }";
-measuringStr += "";
-measuringStr += "      .app-title {";
-measuringStr += "        color: rgb(53, 188, 228); ";
-measuringStr += "        text-align:center; ";
-measuringStr += "        margin-top: 30px!important; ";
-measuringStr += "        font-size:24px;";
-measuringStr += "      }";
-measuringStr += "";
-measuringStr += "    <\/style>";
-measuringStr += "";
-measuringStr += "    <h1 class=\"title app-title\">";
-measuringStr += "      <span style=\"font-weight:200;\">Fat<\/span>Analyzer";
-measuringStr += "    <\/h1>";
-measuringStr += "";
-measuringStr += "    <div class=\"input-container\">";
-measuringStr += "    <progress max=\"100\" value=\"{{progressValue}}\"><\/progress>";
-measuringStr += "    <p style=\"text-align:right; color: white;\">{{progressValue}}%<\/p>";
-measuringStr += "<!--       <div class=\"list list-inset\">";
-measuringStr += "        <label class=\"item item-input\">";
-measuringStr += "          <i class=\"icon ion-ios7-timer-outline placeholder-icon\"><\/i>";
-measuringStr += "          <input type=\"number\" placeholder=\"Enter weight in grams\">";
-measuringStr += "        <\/label>";
-measuringStr += "        <div style=\"color: white; margin-top:20px;\"><span ui-sref='home'>cancel<\/span><\/div>";
-measuringStr += "      <\/div> -->";
-measuringStr += "    <\/div>";
-measuringStr += "";
-measuringStr += "    ";
-measuringStr += "";
-measuringStr += "    <div class=\"measure-button\">";
-measuringStr += "      <button class=\"button button-block button-assertive\" ui-sref=\"home\">";
-measuringStr += "      CANCEL";
-measuringStr += "      <\/button>";
-measuringStr += "    <\/div>";
-measuringStr += "";
-
-
-
-
-
+  var measuringStr="";
+  measuringStr += "    <style>";
+  measuringStr += "      .input-container {";
+  measuringStr += "        margin: auto;";
+  measuringStr += "        position: absolute;";
+  measuringStr += "        top: 0; left: 0; bottom: 0; right: 0;";
+  measuringStr += "        height: 100px;";
+  measuringStr += "        width: 250px;";
+  measuringStr += "      }";
+  measuringStr += "";
+  measuringStr += "      .measure-button {";
+  measuringStr += "        position: fixed; ";
+  measuringStr += "        bottom: 0px; ";
+  measuringStr += "        width: 100%; ";
+  measuringStr += "        padding: 10px 20px;";
+  measuringStr += "      }";
+  measuringStr += "";
+  measuringStr += "      .app-title {";
+  measuringStr += "        color: rgb(53, 188, 228); ";
+  measuringStr += "        text-align:center; ";
+  measuringStr += "        margin-top: 30px!important; ";
+  measuringStr += "        font-size:24px;";
+  measuringStr += "      }";
+  measuringStr += "";
+  measuringStr += "    <\/style>";
+  measuringStr += "";
+  measuringStr += "    <h1 class=\"title app-title\">";
+  measuringStr += "      <span style=\"font-weight:200;\">Fat<\/span>Analyzer";
+  measuringStr += "    <\/h1>";
+  measuringStr += "";
+  measuringStr += "    <div class=\"input-container\">";
+  measuringStr += "    <progress max=\"100\" value=\"{{progressValue}}\"><\/progress>";
+  measuringStr += "    <p style=\"text-align:right; color: white;\">{{progressValue}}%<\/p>";
+  measuringStr += "<!--       <div class=\"list list-inset\">";
+  measuringStr += "        <label class=\"item item-input\">";
+  measuringStr += "          <i class=\"icon ion-ios7-timer-outline placeholder-icon\"><\/i>";
+  measuringStr += "          <input type=\"number\" placeholder=\"Enter weight in grams\">";
+  measuringStr += "        <\/label>";
+  measuringStr += "        <div style=\"color: white; margin-top:20px;\"><span ui-sref='home'>cancel<\/span><\/div>";
+  measuringStr += "      <\/div> -->";
+  measuringStr += "    <\/div>";
+  measuringStr += "";
+  measuringStr += "    ";
+  measuringStr += "";
+  measuringStr += "    <div class=\"measure-button\">";
+  measuringStr += "      <button class=\"button button-block button-assertive\" ui-sref=\"home\">";
+  measuringStr += "      CANCEL";
+  measuringStr += "      <\/button>";
+  measuringStr += "    <\/div>";
+  measuringStr += "";
 
   // Load our template strings into the template cache
   $templateCache.put("home.html",homeStr);
@@ -194,45 +189,59 @@ measuringStr += "";
 
     .state('enterWeight', {
       url: '/enterWeight',
-      //template: '<p style="color: white;">Hello, world!</p>'
       templateUrl: 'enter-weight.html'
     })
 
     .state('measuring', {
       url: '/measuring',
-      //template: '<p style="color: white;">Hello, world!</p>'
       templateUrl: 'measuring.html',
       controller: 'measuringCtrl'
     })
 })
 
 .controller('homeCtrl', function($scope, $rootScope, $timeout) {
-  console.log("in home ctrl!")
-  console.log($rootScope.currentValue)
 
   $timeout(function(){
+    
+    // Run the code to initiate our body fat percentage knob (this should ideally be within a directive)
     initiateKnob();
+
+    // Set knobInitiated to true so we can unhide the now not-so-ugly knob
     $scope.knobInitiated = true;
-    $rootScope.currentValue++;
   })
   
              
 })
 
-.controller('measuringCtrl', function($scope, $rootScope, $timeout, $interval) {
-  console.log("in measuring ctrl!")
+.controller('measuringCtrl', function($scope, $rootScope, $timeout, $interval, $state) {
   console.log($rootScope.currentValue)
   
   $scope.progressValue = 0;
 
-  $interval(function(){
+  incrementProgress = $interval(function(){
+    console.log("interval called")
     if($scope.progressValue < 100)
       $scope.progressValue++;
-  }, 10)
+
+    else{
+
+      // cancel the interval since it appears to be global accross all controllers
+      $interval.cancel(incrementProgress);
+
+      // set a random value for the new body fat percentage from (0-100)
+      $rootScope.currentValue = Math.floor(Math.random() * 100) + 1;
+
+      // Go back to the home state to display the new bodyfat percentage
+      $state.go('home');
+    }
+  }, 20)
 
 })
 
 function initiateKnob(){
+
+  // This function is used to initialize the jQuery knob used to display the body fat percentage
+  // to the user in the home state
 
    $(function($) {
                 $(".knob").knob({
