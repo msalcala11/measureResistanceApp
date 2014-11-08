@@ -147,7 +147,7 @@ angular.module('starter', ['ionic'])
   measuringStr += "    ";
   measuringStr += "";
   measuringStr += "    <div class=\"measure-button\">";
-  measuringStr += "      <button class=\"button button-block button-assertive\" ui-sref=\"home\">";
+  measuringStr += "      <button class=\"button button-block button-assertive\" ng-click=\"cancelMeasurement()\">";
   measuringStr += "      CANCEL";
   measuringStr += "      <\/button>";
   measuringStr += "    <\/div>";
@@ -235,6 +235,11 @@ angular.module('starter', ['ionic'])
       $state.go('home');
     }
   }, 20)
+
+  $scope.cancelMeasurement = function(){
+    $interval.cancel(incrementProgress);
+    $state.go('home');
+  }
 
 })
 
