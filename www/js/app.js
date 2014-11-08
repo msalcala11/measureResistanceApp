@@ -5,188 +5,166 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic'])
 
-.run(function($ionicPlatform, $templateCache) {
+.run(function($ionicPlatform, $templateCache, $rootScope) {
 
-var homeStr="";
-homeStr += "    <style>";
-homeStr += "      .knob-container {";
-homeStr += "        margin: auto;";
-homeStr += "        position: absolute;";
-homeStr += "        top: 0; left: 0; bottom: 0; right: 0;";
-homeStr += "        height: 200px;";
-homeStr += "        width: 200px;";
-homeStr += "      }";
-homeStr += "";
-homeStr += "      .measure-button {";
-homeStr += "        position: fixed; ";
-homeStr += "        bottom: 0px; ";
-homeStr += "        width: 100%; ";
-homeStr += "        padding: 10px 20px;";
-homeStr += "      }";
-homeStr += "";
-homeStr += "      .app-title {";
-homeStr += "        color: rgb(53, 188, 228); ";
-homeStr += "        text-align:center; ";
-homeStr += "        margin-top: 30px!important; ";
-homeStr += "        font-size:24px;";
-homeStr += "      }";
-homeStr += "    <\/style>";
-homeStr += "";
-homeStr += "            <script>";
-homeStr += "            $(function($) {";
-homeStr += "                $(\".knob\").knob({";
-homeStr += "                    change : function (value) {";
-homeStr += "                        \/\/console.log(\"change : \" + value);";
-homeStr += "                    },";
-homeStr += "                    release : function (value) {";
-homeStr += "                        \/\/console.log(this.$.attr('value'));";
-homeStr += "                        console.log(\"release : \" + value);";
-homeStr += "                    },";
-homeStr += "                    cancel : function () {";
-homeStr += "                        console.log(\"cancel : \", this);";
-homeStr += "                    },";
-homeStr += "                    \/*format : function (value) {";
-homeStr += "                        return value + '%';";
-homeStr += "                    },*\/";
-homeStr += "                    draw : function () {";
-homeStr += "                        \/\/ \"tron\" case";
-homeStr += "                        if(this.$.data('skin') == 'tron') {";
-homeStr += "                            this.cursorExt = 0.3;";
-homeStr += "                            var a = this.arc(this.cv)  \/\/ Arc";
-homeStr += "                                , pa                   \/\/ Previous arc";
-homeStr += "                                , r = 1;";
-homeStr += "                            this.g.lineWidth = this.lineWidth;";
-homeStr += "                            if (this.o.displayPrevious) {";
-homeStr += "                                pa = this.arc(this.v);";
-homeStr += "                                this.g.beginPath();";
-homeStr += "                                this.g.strokeStyle = this.pColor;";
-homeStr += "                                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, pa.s, pa.e, pa.d);";
-homeStr += "                                this.g.stroke();";
-homeStr += "                            }";
-homeStr += "                            this.g.beginPath();";
-homeStr += "                            this.g.strokeStyle = r ? this.o.fgColor : this.fgColor ;";
-homeStr += "                            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, a.s, a.e, a.d);";
-homeStr += "                            this.g.stroke();";
-homeStr += "                            this.g.lineWidth = 2;";
-homeStr += "                            this.g.beginPath();";
-homeStr += "                            this.g.strokeStyle = this.o.fgColor;";
-homeStr += "                            this.g.arc( this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 \/ 3, 0, 2 * Math.PI, false);";
-homeStr += "                            this.g.stroke();";
-homeStr += "                            return false;";
-homeStr += "                        }";
-homeStr += "                    }";
-homeStr += "                });";
-homeStr += "                \/\/ Example of infinite knob, iPod click wheel";
-homeStr += "                var v, up=0,down=0,i=0";
-homeStr += "                    ,$idir = $(\"div.idir\")";
-homeStr += "                    ,$ival = $(\"div.ival\")";
-homeStr += "                    ,incr = function() { i++; $idir.show().html(\"+\").fadeOut(); $ival.html(i); }";
-homeStr += "                    ,decr = function() { i--; $idir.show().html(\"-\").fadeOut(); $ival.html(i); };";
-homeStr += "                $(\"input.infinite\").knob(";
-homeStr += "                                    {";
-homeStr += "                                    min : 0";
-homeStr += "                                    , max : 20";
-homeStr += "                                    , stopper : false";
-homeStr += "                                    , change : function () {";
-homeStr += "                                                    if(v > this.cv){";
-homeStr += "                                                        if(up){";
-homeStr += "                                                            decr();";
-homeStr += "                                                            up=0;";
-homeStr += "                                                        }else{up=1;down=0;}";
-homeStr += "                                                    } else {";
-homeStr += "                                                        if(v < this.cv){";
-homeStr += "                                                            if(down){";
-homeStr += "                                                                incr();";
-homeStr += "                                                                down=0;";
-homeStr += "                                                            }else{down=1;up=0;}";
-homeStr += "                                                        }";
-homeStr += "                                                    }";
-homeStr += "                                                    v = this.cv;";
-homeStr += "                                                }";
-homeStr += "                                    });";
-homeStr += "            });";
-homeStr += "        <\/script>";
-homeStr += "";
-homeStr += "    <h1 class=\"title app-title\">";
-homeStr += "      <span style=\"font-weight:200;\">Fat<\/span>Analyzer";
-homeStr += "    <\/h1>";
-homeStr += "";
-homeStr += "    <div class=\"knob-container\">";
-homeStr += "         <input class=\"knob\" data-width=\"200\"";
-homeStr += "          data-fgColor=\"#35BCE4\"";
-homeStr += "          data-skin=\"tron\"";
-homeStr += "          data-thickness=\".2\"";
-homeStr += "          data-displayPrevious=true";
-homeStr += "          value=\"35\"";
-homeStr += "          data-readOnly=true";
-homeStr += "          >";
-homeStr += "    <\/div>";
-homeStr += "";
-homeStr += "    <div class=\"measure-button\">";
-homeStr += "      <button class=\"button button-block button-positive\" ui-sref=\"enterWeight\">";
-homeStr += "      MEASURE";
-homeStr += "      <\/button>";
-homeStr += "    <\/div>";
-homeStr += "";
+  var homeStr="";
+  homeStr += "    <style>";
+  homeStr += "      .knob-container {";
+  homeStr += "        margin: auto;";
+  homeStr += "        position: absolute;";
+  homeStr += "        top: 0; left: 0; bottom: 0; right: 0;";
+  homeStr += "        height: 200px;";
+  homeStr += "        width: 200px;";
+  homeStr += "      }";
+  homeStr += "";
+  homeStr += "      .measure-button {";
+  homeStr += "        position: fixed; ";
+  homeStr += "        bottom: 0px; ";
+  homeStr += "        width: 100%; ";
+  homeStr += "        padding: 10px 20px;";
+  homeStr += "      }";
+  homeStr += "";
+  homeStr += "      .app-title {";
+  homeStr += "        color: rgb(53, 188, 228); ";
+  homeStr += "        text-align:center; ";
+  homeStr += "        margin-top: 30px!important; ";
+  homeStr += "        font-size:24px;";
+  homeStr += "      }";
+  homeStr += "    <\/style>";
+  homeStr += "";
+  homeStr += "    <h1 class=\"title app-title\">";
+  homeStr += "      <span style=\"font-weight:200;\">Fat<\/span>Analyzer";
+  homeStr += "    <\/h1>";
+  homeStr += "";
+  homeStr += "    <div class=\"knob-container\" ng-show='knobInitiated'>";
+  homeStr += "         <input class=\"knob\" data-width=\"200\"";
+  homeStr += "          data-fgColor=\"#35BCE4\"";
+  homeStr += "          data-skin=\"tron\"";
+  homeStr += "          data-thickness=\".2\"";
+  homeStr += "          data-displayPrevious=true";
+  homeStr += "          value=\"{{currentValue}}\"";
+  homeStr += "          data-readOnly=true";
+  homeStr += "          >";
+  homeStr += "    <\/div>";
+  homeStr += "";
+  homeStr += "    <div class=\"measure-button\">";
+  homeStr += "      <button class=\"button button-block button-positive\" ui-sref=\"enterWeight\">";
+  homeStr += "      MEASURE";
+  homeStr += "      <\/button>";
+  homeStr += "    <\/div>";
+  homeStr += "";
 
-var enterWeightStr="";
-enterWeightStr += "    <style>";
-enterWeightStr += "      .input-container {";
-enterWeightStr += "        margin: auto;";
-enterWeightStr += "        position: absolute;";
-enterWeightStr += "        top: 0; left: 0; bottom: 0; right: 0;";
-enterWeightStr += "        height: 180px;";
-enterWeightStr += "        width: 250px;";
-enterWeightStr += "      }";
-enterWeightStr += "";
-enterWeightStr += "      .measure-button {";
-enterWeightStr += "        position: fixed; ";
-enterWeightStr += "        bottom: 0px; ";
-enterWeightStr += "        width: 100%; ";
-enterWeightStr += "        padding: 10px 20px;";
-enterWeightStr += "      }";
-enterWeightStr += "";
-enterWeightStr += "      .app-title {";
-enterWeightStr += "        color: rgb(53, 188, 228); ";
-enterWeightStr += "        text-align:center; ";
-enterWeightStr += "        margin-top: 30px!important; ";
-enterWeightStr += "        font-size:24px;";
-enterWeightStr += "      }";
-enterWeightStr += "    <\/style>";
-enterWeightStr += "";
-enterWeightStr += "    <h1 class=\"title app-title\">";
-enterWeightStr += "      <span style=\"font-weight:200;\">Fat<\/span>Analyzer";
-enterWeightStr += "    <\/h1>";
-enterWeightStr += "";
-enterWeightStr += "    <div class=\"input-container\"";
-enterWeightStr += "      <div class=\"list list-inset\">";
-enterWeightStr += "        <label class=\"item item-input\">";
-enterWeightStr += "          <i class=\"icon ion-ios7-timer-outline placeholder-icon\"><\/i>";
-enterWeightStr += "          <input type=\"number\" placeholder=\"Enter weight in grams\">";
-enterWeightStr += "        <\/label>";
-enterWeightStr += "        <div style=\"color: white; margin-top:20px;\"><span ui-sref='home'>cancel<\/span><\/div>";
-enterWeightStr += "      <\/div>";
-enterWeightStr += "    <\/div>";
-enterWeightStr += "";
-enterWeightStr += "    ";
-enterWeightStr += "";
-enterWeightStr += "    <div class=\"measure-button\">";
-enterWeightStr += "      <button class=\"button button-block button-balanced\" ui-sref=\"test\">";
-enterWeightStr += "      START";
-enterWeightStr += "      <\/button>";
-enterWeightStr += "    <\/div>";
-enterWeightStr += "";
+  var enterWeightStr="";
+  enterWeightStr += "    <style>";
+  enterWeightStr += "      .input-container {";
+  enterWeightStr += "        margin: auto;";
+  enterWeightStr += "        position: absolute;";
+  enterWeightStr += "        top: 0; left: 0; bottom: 0; right: 0;";
+  enterWeightStr += "        height: 100px;";
+  enterWeightStr += "        width: 250px;";
+  enterWeightStr += "      }";
+  enterWeightStr += "";
+  enterWeightStr += "      .measure-button {";
+  enterWeightStr += "        position: fixed; ";
+  enterWeightStr += "        bottom: 0px; ";
+  enterWeightStr += "        width: 100%; ";
+  enterWeightStr += "        padding: 10px 20px;";
+  enterWeightStr += "      }";
+  enterWeightStr += "";
+  enterWeightStr += "      .app-title {";
+  enterWeightStr += "        color: rgb(53, 188, 228); ";
+  enterWeightStr += "        text-align:center; ";
+  enterWeightStr += "        margin-top: 30px!important; ";
+  enterWeightStr += "        font-size:24px;";
+  enterWeightStr += "      }";
+  enterWeightStr += "    <\/style>";
+  enterWeightStr += "";
+  enterWeightStr += "    <h1 class=\"title app-title\">";
+  enterWeightStr += "      <span style=\"font-weight:200;\">Fat<\/span>Analyzer";
+  enterWeightStr += "    <\/h1>";
+  enterWeightStr += "";
+  enterWeightStr += "    <div class=\"input-container\"";
+  enterWeightStr += "      <div class=\"list list-inset\">";
+  enterWeightStr += "        <label class=\"item item-input\">";
+  enterWeightStr += "          <i class=\"icon ion-ios7-timer-outline placeholder-icon\"><\/i>";
+  enterWeightStr += "          <input type=\"number\" placeholder=\"Enter weight in grams\">";
+  enterWeightStr += "        <\/label>";
+  enterWeightStr += "        <div style=\"color: white; margin-top:20px;\"><span ui-sref='home'>cancel<\/span><\/div>";
+  enterWeightStr += "      <\/div>";
+  enterWeightStr += "    <\/div>";
+  enterWeightStr += "";
+  enterWeightStr += "    ";
+  enterWeightStr += "";
+  enterWeightStr += "    <div class=\"measure-button\">";
+  enterWeightStr += "      <button class=\"button button-block button-balanced\" ui-sref=\"measuring\">";
+  enterWeightStr += "      START";
+  enterWeightStr += "      <\/button>";
+  enterWeightStr += "    <\/div>";
+  enterWeightStr += "";
+
+var measuringStr="";
+measuringStr += "    <style>";
+measuringStr += "      .input-container {";
+measuringStr += "        margin: auto;";
+measuringStr += "        position: absolute;";
+measuringStr += "        top: 0; left: 0; bottom: 0; right: 0;";
+measuringStr += "        height: 100px;";
+measuringStr += "        width: 250px;";
+measuringStr += "      }";
+measuringStr += "";
+measuringStr += "      .measure-button {";
+measuringStr += "        position: fixed; ";
+measuringStr += "        bottom: 0px; ";
+measuringStr += "        width: 100%; ";
+measuringStr += "        padding: 10px 20px;";
+measuringStr += "      }";
+measuringStr += "";
+measuringStr += "      .app-title {";
+measuringStr += "        color: rgb(53, 188, 228); ";
+measuringStr += "        text-align:center; ";
+measuringStr += "        margin-top: 30px!important; ";
+measuringStr += "        font-size:24px;";
+measuringStr += "      }";
+measuringStr += "";
+measuringStr += "    <\/style>";
+measuringStr += "";
+measuringStr += "    <h1 class=\"title app-title\">";
+measuringStr += "      <span style=\"font-weight:200;\">Fat<\/span>Analyzer";
+measuringStr += "    <\/h1>";
+measuringStr += "";
+measuringStr += "    <div class=\"input-container\">";
+measuringStr += "    <progress max=\"100\" value=\"{{progressValue}}\"><\/progress>";
+measuringStr += "    <p style=\"text-align:right; color: white;\">{{progressValue}}%<\/p>";
+measuringStr += "<!--       <div class=\"list list-inset\">";
+measuringStr += "        <label class=\"item item-input\">";
+measuringStr += "          <i class=\"icon ion-ios7-timer-outline placeholder-icon\"><\/i>";
+measuringStr += "          <input type=\"number\" placeholder=\"Enter weight in grams\">";
+measuringStr += "        <\/label>";
+measuringStr += "        <div style=\"color: white; margin-top:20px;\"><span ui-sref='home'>cancel<\/span><\/div>";
+measuringStr += "      <\/div> -->";
+measuringStr += "    <\/div>";
+measuringStr += "";
+measuringStr += "    ";
+measuringStr += "";
+measuringStr += "    <div class=\"measure-button\">";
+measuringStr += "      <button class=\"button button-block button-assertive\" ui-sref=\"home\">";
+measuringStr += "      CANCEL";
+measuringStr += "      <\/button>";
+measuringStr += "    <\/div>";
+measuringStr += "";
 
 
 
 
 
 
-
-
-
+  // Load our template strings into the template cache
   $templateCache.put("home.html",homeStr);
   $templateCache.put("enter-weight.html",enterWeightStr);
+  $templateCache.put("measuring.html",measuringStr);
+
+  // Load a random value to populate the knob
+  $rootScope.currentValue = 41;
 
   $ionicPlatform.ready(function() {
         
@@ -219,11 +197,44 @@ enterWeightStr += "";
       //template: '<p style="color: white;">Hello, world!</p>'
       templateUrl: 'enter-weight.html'
     })
+
+    .state('measuring', {
+      url: '/measuring',
+      //template: '<p style="color: white;">Hello, world!</p>'
+      templateUrl: 'measuring.html',
+      controller: 'measuringCtrl'
+    })
 })
 
-.controller('homeCtrl', function($scope) {
+.controller('homeCtrl', function($scope, $rootScope, $timeout) {
   console.log("in home ctrl!")
-              $(function($) {
+  console.log($rootScope.currentValue)
+
+  $timeout(function(){
+    initiateKnob();
+    $scope.knobInitiated = true;
+    $rootScope.currentValue++;
+  })
+  
+             
+})
+
+.controller('measuringCtrl', function($scope, $rootScope, $timeout, $interval) {
+  console.log("in measuring ctrl!")
+  console.log($rootScope.currentValue)
+  
+  $scope.progressValue = 0;
+
+  $interval(function(){
+    if($scope.progressValue < 100)
+      $scope.progressValue++;
+  }, 10)
+
+})
+
+function initiateKnob(){
+
+   $(function($) {
                 $(".knob").knob({
                     change : function (value) {
                         //console.log("change : " + value);
@@ -295,4 +306,5 @@ enterWeightStr += "";
                                                 }
                                     });
             });
-})
+
+}

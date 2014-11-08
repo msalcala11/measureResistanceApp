@@ -26,20 +26,22 @@
       <span style="font-weight:200;">Fat</span>Analyzer
     </h1>
 
-    <div class="input-container"
-      <div class="list list-inset">
+    <div class="input-container">
+    <progress max="100" value="{{progressValue}}"></progress>
+    <p style="text-align:right; color: white;">{{progressValue}}%</p>
+<!--       <div class="list list-inset">
         <label class="item item-input">
           <i class="icon ion-ios7-timer-outline placeholder-icon"></i>
           <input type="number" placeholder="Enter weight in grams">
         </label>
         <div style="color: white; margin-top:20px;"><span ui-sref='home'>cancel</span></div>
-      </div>
+      </div> -->
     </div>
 
     
 
     <div class="measure-button">
-      <button class="button button-block button-balanced" ui-sref="measuring">
-      START
+      <button class="button button-block button-assertive" ui-sref="home">
+      CANCEL
       </button>
     </div>
