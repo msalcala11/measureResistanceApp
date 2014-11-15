@@ -50,6 +50,23 @@ angular.module('starter', ['ionic'])
 
 .controller('homeCtrl', function($scope, $rootScope, $timeout) {
 
+  var macAddress =  "98:76:B6:00:34:9A";
+
+  $timeout(function(){
+    console.log("about to try connecting")
+    bluetoothSerial.connect(macAddress, connnectSuccess, connectFailure);
+  }, 1000)
+
+  // bluetoothSerial.connect(uuid, connectSuccess, connectFailure);
+
+  function connnectSuccess(){
+    console.log("We connected via bluetooth");
+  }
+
+  function connectFailure(){
+    console.log("Could not connect");
+  }
+
   $timeout(function(){
     
     // Run the code to initiate our body fat percentage knob (this should ideally be within a directive)
