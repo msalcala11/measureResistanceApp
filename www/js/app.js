@@ -5,10 +5,11 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic'])
 
-.run(function($ionicPlatform, $templateCache, $rootScope) {
+.run(function($ionicPlatform, $templateCache, $rootScope, $interval) {
 
   // Load a random value to populate the knob
   $rootScope.currentValue = 41;
+  $rootScope.connected = false;
 
   $ionicPlatform.ready(function() {
         
@@ -20,6 +21,22 @@ angular.module('starter', ['ionic'])
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }
+
+    // monitor ble connectivity status every second
+    $rootScope.monitorConnectivity = function(){
+      $interval(function(){
+        bluetoothSerial.isConnected(
+            function() {
+                console.log("bluetooth connected");
+                $rootScope.connected = true;
+            },
+            function() {
+                $rootScope.connected = false;
+                console.log("Bluetooth is *not* connected");
+            }
+        );
+      }, 1000)
+    }();
 
 
   });
