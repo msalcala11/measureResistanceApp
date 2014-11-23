@@ -50,22 +50,43 @@ angular.module('starter', ['ionic'])
 
 .controller('homeCtrl', function($scope, $rootScope, $timeout) {
 
-  var macAddress =  "98:76:B6:00:34:9A";
+  var macAddress =  "47A32FB5-F126-7461-76E8-67DBA3015545";
 
   $timeout(function(){
     console.log("about to try connecting")
     bluetoothSerial.connect(macAddress, connnectSuccess, connectFailure);
-  }, 1000)
 
-  // bluetoothSerial.connect(uuid, connectSuccess, connectFailure);
+    // bluetoothSerial.list(
+    //             function(results) {
+    //                // app.display(JSON.stringify(results));
+    //                console.log("ble devices:")
+    //                console.log(JSON.stringify(results));
+    //             },
+    //             function(error) {
+    //             	console.log("ble devices error:")
+    //                	console.log(JSON.stringify(error));
+    //                // app.display(JSON.stringify(error));
+    //             }
+    //         );
+  }, 1000)
 
   function connnectSuccess(){
     console.log("We connected via bluetooth");
+    console.log("attempting to subscribez")
+    bluetoothSerial.subscribe("\n", gotMessage, gotMessageError);
   }
 
   function connectFailure(){
     console.log("Could not connect");
   }
+
+	function gotMessage(data){
+		console.log(data)
+	}
+
+	function gotMessageError(error){
+		console.log("error")
+	}
 
   $timeout(function(){
     
