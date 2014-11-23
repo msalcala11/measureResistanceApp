@@ -70,19 +70,31 @@ angular.module('starter', ['ionic'])
     //         );
   }, 1000)
 
+  $scope.gotMessage = function(data){
+    console.log(data)
+
+    console.log("about to write back")
+    bluetoothSerial.write("got it!", function(){
+      console.log("wrote");
+    }, function(){
+      console.log("failed write");
+    });
+  }
+
   function connnectSuccess(){
     console.log("We connected via bluetooth");
     console.log("attempting to subscribez")
-    bluetoothSerial.subscribe("\n", gotMessage, gotMessageError);
+
+    bluetoothSerial.subscribe("\n", $scope.gotMessage, function(){
+      console.log("got an error..");
+    });
   }
 
   function connectFailure(){
     console.log("Could not connect");
   }
 
-	function gotMessage(data){
-		console.log(data)
-	}
+
 
 	function gotMessageError(error){
 		console.log("error")
