@@ -72,13 +72,14 @@ angular.module('starter', ['ionic'])
 
   $scope.gotMessage = function(data){
     console.log(data)
-
-    console.log("about to write back")
-    bluetoothSerial.write("got it!", function(){
-      console.log("wrote");
-    }, function(){
-      console.log("failed write");
-    });
+    console.log(data)
+    $rootScope.newResistance = data;
+    // console.log("about to write back")
+    // bluetoothSerial.write("got it!", function(){
+    //   console.log("wrote");
+    // }, function(){
+    //   console.log("failed write");
+    // });
   }
 
   function connnectSuccess(){
@@ -114,15 +115,24 @@ angular.module('starter', ['ionic'])
 
 .controller('measuringCtrl', function($scope, $rootScope, $timeout, $interval, $state) {
   console.log($rootScope.currentValue)
+
+  bluetoothSerial.write("start_test", function(){
+      console.log("started_test");
+    }, function(){
+      console.log("failed to start_test");
+    });
   
   $scope.progressValue = 0;
 
   incrementProgress = $interval(function(){
     console.log("interval called")
-    if($scope.progressValue < 100)
+    if($scope.progressValue < 99)
       $scope.progressValue++;
 
-    else{
+    else if(typeof $rootScope.newResistance === "undefined"){
+      // wait to get resistance
+    }
+    else {
 
       // cancel the interval since it appears to be global accross all controllers
       $interval.cancel(incrementProgress);
@@ -130,10 +140,11 @@ angular.module('starter', ['ionic'])
       // set a random value for the new body fat percentage from (0-100)
       $rootScope.currentValue = Math.floor(Math.random() * 100) + 1;
 
+      delete $rootScope.newResistance;
       // Go back to the home state to display the new bodyfat percentage
       $state.go('home');
     }
-  }, 20)
+  }, 130)
 
   $scope.cancelMeasurement = function(){
     $interval.cancel(incrementProgress);
