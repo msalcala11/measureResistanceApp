@@ -9,6 +9,8 @@ angular.module('starter', ['ionic'])
 
   // Load a random value to populate the knob
   $rootScope.currentValue = 41;
+
+  // Create a global ble connected status variable for use with ng-show/ng-hide
   $rootScope.connected = false;
 
   $ionicPlatform.ready(function() {
@@ -87,8 +89,9 @@ angular.module('starter', ['ionic'])
     //         );
   }, 1000)
 
+
   $scope.gotMessage = function(data){
-    console.log(data)
+    // This function gets called when we receive the resistance measurement from the arduino
     console.log(data)
     $rootScope.newResistance = data;
     // console.log("about to write back")
@@ -112,9 +115,9 @@ angular.module('starter', ['ionic'])
     console.log("Could not connect");
   }
 
-
-
 	function gotMessageError(error){
+    // If there is an error receiving the resistance measurement from the arduino, this function 
+    // gets called
 		console.log("error")
 	}
 
