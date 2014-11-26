@@ -9,6 +9,7 @@ angular.module('starter', ['ionic'])
 
   // Load a random value to populate the knob
   $rootScope.currentValue = 41;
+  $rootScope.weight = 0;
 
   // Create a global ble connected status variable for use with ng-show/ng-hide
   $rootScope.connected = false;
@@ -77,7 +78,7 @@ angular.module('starter', ['ionic'])
   $rootScope.gotMessage = function(data){
     // This function gets called when we receive the resistance measurement from the arduino
     console.log(data)
-    $rootScope.newResistance = data;
+    $rootScope.newResistance = parseFloat(data);
     // console.log("about to write back")
     // bluetoothSerial.write("got it!", function(){
     //   console.log("wrote");
@@ -116,7 +117,8 @@ angular.module('starter', ['ionic'])
 
     .state('enterWeight', {
       url: '/enterWeight',
-      templateUrl: 'enter-weight.html'
+      templateUrl: 'enter-weight.html',
+      controller: 'enterWeightCtrl'
     })
 
     .state('measuring', {
@@ -197,6 +199,11 @@ angular.module('starter', ['ionic'])
              
 })
 
+.controller('enterWeightCtrl', function($scope, $rootScope, $timeout, $interval, $state) {
+  $rootScope.weight = 0;
+  console.log($rootScope.currentValue)
+})
+
 .controller('measuringCtrl', function($scope, $rootScope, $timeout, $interval, $state) {
   console.log($rootScope.currentValue)
 
@@ -221,8 +228,27 @@ angular.module('starter', ['ionic'])
       // cancel the interval since it appears to be global accross all controllers
       $interval.cancel(incrementProgress);
 
+      console.log("about to compute regression")
+      // Define our leanMass regression coefficients
+      var B0 = 1;
+      var B1 = 2;
+      var B2 = 3;
+
+      // Define our waterMass regression coefficients
+      var C0 = 1;
+      var C1 = 2;
+      var C2 = 3;
+
+      // Let's compute the regression
+      var leanMass = B0 + B1*$rootScope.newResistance + B2*$rootScope.weight;
+      console.log("leanMass: " + leanMass)
+      var waterMass = C0 + C1*$rootScope.newResistance + C2*$rootScope.weight;
+      console.log("waterMass: " + waterMass)
+      var fatMass = $rootScope.weight - leanMass - waterMass;
+      console.log("fatMass: " + fatMass)
+
       // set a random value for the new body fat percentage from (0-100)
-      $rootScope.currentValue = Math.floor(Math.random() * 100) + 1;
+      $rootScope.currentValue = fatMass/($rootScope.weight - waterMass); //Math.floor(Math.random() * 100) + 1;
 
       delete $rootScope.newResistance;
       // Go back to the home state to display the new bodyfat percentage
