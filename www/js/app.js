@@ -210,14 +210,14 @@ angular.module('starter', ['ionic'])
 
   incrementProgress = $interval(function(){
     console.log("interval called")
-    if($scope.progressValue < 99)
+    if($scope.progressValue < 99 && typeof $rootScope.newResistance === "undefined")
       $scope.progressValue++;
 
     else if(typeof $rootScope.newResistance === "undefined"){
       // wait to get resistance
     }
     else {
-
+      $scope.progressValue = 100;
       // cancel the interval since it appears to be global accross all controllers
       $interval.cancel(incrementProgress);
 
@@ -228,7 +228,7 @@ angular.module('starter', ['ionic'])
       // Go back to the home state to display the new bodyfat percentage
       $state.go('home');
     }
-  }, 130)
+  }, 100)
 
   $scope.cancelMeasurement = function(){
     $interval.cancel(incrementProgress);
