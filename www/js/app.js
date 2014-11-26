@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 angular.module('starter', ['ionic'])
 
-.run(function($ionicPlatform, $templateCache, $rootScope, $interval) {
+.run(function($ionicPlatform, $templateCache, $rootScope, $interval, $timeout) {
 
   // Load a random value to populate the knob
   $rootScope.currentValue = 41;
@@ -34,11 +34,70 @@ angular.module('starter', ['ionic'])
             },
             function() {
                 $rootScope.connected = false;
+
+                // If we are not already trying to connect, attempt to reconnect
+                if(!$rootScope.connecting){
+
+                  $timeout(function(){
+                    console.log("attempting to RECONNECT")
+                    $rootScope.connecting = true;
+                    $rootScope.initiateConnection();
+
+                  }, 1000)
+
+                }
                 console.log("Bluetooth is *not* connected");
             }
         );
       }, 1000)
     }();
+
+    $rootScope.initiateConnection = function(){
+      console.log("running initiateConnection..")
+      // Let's scan the environment for a ble device with the name "BLE Shield"
+      bluetoothSerial.list(function(devices) {
+          console.log("in success callback")
+
+          if(devices.length === 0)
+            return $rootScope.connecting = false;
+
+          var bleShield = _.findWhere(devices, {name: "BLE Shield"});
+
+          // JSON output of bleShield looks like this:
+          //[{"id":"55174456-779D-D60E-82D4-EA927560790C","name":"BLE Shield","uuid":"55174456-779D-D60E-82D4-EA927560790C"}]
+          
+          // Now that we have found the bleShield and have its id, lets connect!
+          bluetoothSerial.connect(bleShield.uuid, $rootScope.connnectSuccess, function(){$rootScope.connecting = false;});
+      }, function(){
+        console.log("in fail callback")
+      });
+
+    }
+
+  $rootScope.gotMessage = function(data){
+    // This function gets called when we receive the resistance measurement from the arduino
+    console.log(data)
+    $rootScope.newResistance = data;
+    // console.log("about to write back")
+    // bluetoothSerial.write("got it!", function(){
+    //   console.log("wrote");
+    // }, function(){
+    //   console.log("failed write");
+    // });
+  }
+
+  $rootScope.connnectSuccess = function (){
+    console.log("We connected via bluetooth");
+    console.log("attempting to subscribez")
+    $rootScope.connecting = false;
+    // $rootScope.connected = true;
+    // $scope.connected = true;
+    console.log("connected: " + $rootScope.connected)
+
+    bluetoothSerial.subscribe("\n", $rootScope.gotMessage, function(){
+      console.log("got an error..");
+    });
+  }
 
 
   });
@@ -69,47 +128,52 @@ angular.module('starter', ['ionic'])
 
 .controller('homeCtrl', function($scope, $rootScope, $timeout) {
 
-  var macAddress =  "47A32FB5-F126-7461-76E8-67DBA3015545";
-
   $timeout(function(){
-    console.log("about to try connecting")
-    bluetoothSerial.connect(macAddress, connnectSuccess, connectFailure);
 
-    // bluetoothSerial.list(
-    //             function(results) {
-    //                // app.display(JSON.stringify(results));
-    //                console.log("ble devices:")
-    //                console.log(JSON.stringify(results));
-    //             },
-    //             function(error) {
-    //             	console.log("ble devices error:")
-    //                	console.log(JSON.stringify(error));
-    //                // app.display(JSON.stringify(error));
-    //             }
-    //         );
+    if(!$rootScope.connected)
+      $rootScope.initiateConnection();
+
+    // // Let's scan the environment for a ble device with the name "BLE Shield"
+    // bluetoothSerial.list(function(devices) {
+    //     console.log("in success callback")
+    //     var bleShield = _.findWhere(devices, {name: "BLE Shield"});
+
+    //     // JSON output of bleShield looks like this:
+    //     //[{"id":"55174456-779D-D60E-82D4-EA927560790C","name":"BLE Shield","uuid":"55174456-779D-D60E-82D4-EA927560790C"}]
+        
+    //     // Now that we have found the bleShield and have its id, lets connect!
+    //     bluetoothSerial.connect(bleShield.uuid, $scope.connnectSuccess, connectFailure);
+    // }, function(){
+    //   console.log("in fail callback")
+    // });
+
   }, 1000)
 
 
-  $scope.gotMessage = function(data){
-    // This function gets called when we receive the resistance measurement from the arduino
-    console.log(data)
-    $rootScope.newResistance = data;
-    // console.log("about to write back")
-    // bluetoothSerial.write("got it!", function(){
-    //   console.log("wrote");
-    // }, function(){
-    //   console.log("failed write");
-    // });
-  }
+  // $scope.gotMessage = function(data){
+  //   // This function gets called when we receive the resistance measurement from the arduino
+  //   console.log(data)
+  //   $rootScope.newResistance = data;
+  //   // console.log("about to write back")
+  //   // bluetoothSerial.write("got it!", function(){
+  //   //   console.log("wrote");
+  //   // }, function(){
+  //   //   console.log("failed write");
+  //   // });
+  // }
 
-  function connnectSuccess(){
-    console.log("We connected via bluetooth");
-    console.log("attempting to subscribez")
+  // $scope.connnectSuccess = function (){
+  //   console.log("We connected via bluetooth");
+  //   console.log("attempting to subscribez")
 
-    bluetoothSerial.subscribe("\n", $scope.gotMessage, function(){
-      console.log("got an error..");
-    });
-  }
+  //   // $rootScope.connected = true;
+  //   // $scope.connected = true;
+  //   console.log("connected: " + $rootScope.connected)
+
+  //   bluetoothSerial.subscribe("\n", $scope.gotMessage, function(){
+  //     console.log("got an error..");
+  //   });
+  // }
 
   function connectFailure(){
     console.log("Could not connect");
