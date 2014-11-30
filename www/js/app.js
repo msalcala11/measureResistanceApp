@@ -191,6 +191,7 @@ angular.module('starter', ['ionic'])
     
     // Run the code to initiate our body fat percentage knob (this should ideally be within a directive)
     initiateKnob();
+    initiateLoader($rootScope.currentValue);
 
     // Set knobInitiated to true so we can unhide the now not-so-ugly knob
     $scope.knobInitiated = true;
@@ -200,8 +201,13 @@ angular.module('starter', ['ionic'])
 })
 
 .controller('enterWeightCtrl', function($scope, $rootScope, $timeout, $interval, $state) {
-  $rootScope.weight = 0;
-  console.log($rootScope.currentValue)
+  $scope.fullWeight = 0;
+
+  $scope.storeWeight = function(){
+    $rootScope.weight = parseFloat($scope.fullWeight);
+    $state.go("measuring");
+  }
+  //console.log($rootScope.currentValue)
 })
 
 .controller('measuringCtrl', function($scope, $rootScope, $timeout, $interval, $state) {
@@ -230,26 +236,29 @@ angular.module('starter', ['ionic'])
 
       console.log("about to compute regression")
       // Define our leanMass regression coefficients
-      var B0 = 1;
-      var B1 = 2;
-      var B2 = 3;
+      var B0 = -13.36117;
+      var B1 = 0.0085998;
+      var B2 = 0.5964701;
 
       // Define our waterMass regression coefficients
-      var C0 = 1;
-      var C1 = 2;
-      var C2 = 3;
+      var C0 = 14.35698;
+      var C1 = -0.0079816;
+      var C2 = 0.3226745;
 
-      // Let's compute the regression
+      $rootScope.newResistance = 600;
+      console.log("$rootScope.weight: " + $rootScope.weight);
+      //$rootScope.weight = 130;
+      // Let's compute the regressionjquery.classyloader.js
       var leanMass = B0 + B1*$rootScope.newResistance + B2*$rootScope.weight;
       console.log("leanMass: " + leanMass)
-      var waterMass = C0 + C1*$rootScope.newResistance + C2*$rootScope.weight;
+      var waterMass = 0.35*$rootScope.weight;//C0 + C1*$rootScope.newResistance + C2*$rootScope.weight;
       console.log("waterMass: " + waterMass)
       var fatMass = $rootScope.weight - leanMass - waterMass;
       console.log("fatMass: " + fatMass)
 
       // set a random value for the new body fat percentage from (0-100)
-      $rootScope.currentValue = fatMass/($rootScope.weight - waterMass); //Math.floor(Math.random() * 100) + 1;
-
+      $rootScope.currentValue = Math.floor(100*(fatMass/($rootScope.weight - waterMass))); //Math.floor(Math.random() * 100) + 1;
+      console.log("fatPercentage: " + $rootScope.currentValue);
       delete $rootScope.newResistance;
       // Go back to the home state to display the new bodyfat percentage
       $state.go('home');
@@ -341,4 +350,21 @@ function initiateKnob(){
                                     });
             });
 
+}
+
+function initiateLoader(pct){
+  console.log("about to do classy")
+$('.loader').ClassyLoader({
+    speed: 50,
+    diameter: 80,
+    fontSize: '30px',
+    fontFamily: 'Arial',
+    fontColor: 'rgb(53, 188, 228)',
+    lineColor: 'rgb(53, 188, 228)',
+    remainingLineColor: 'rgba(73, 125, 164, 0.1)',
+    percentage: pct,
+    lineWidth: 20,
+    start: 'top',
+    //remainingLineColor: 'rgba(200,200,200,0.1)'
+});
 }

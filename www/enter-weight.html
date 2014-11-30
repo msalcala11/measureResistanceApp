@@ -35,7 +35,7 @@
       <div class="list list-inset">
         <label class="item item-input">
           <i class="icon ion-ios7-timer-outline placeholder-icon"></i>
-          <input type="number" placeholder="Enter weight in grams" ng-model="weight">
+          <input type="number" placeholder="Enter weight in grams" ng-model="fullWeight">
         </label>
         <div style="color: white; margin-top:20px;"><span ui-sref='home'>cancel</span></div>
       </div>
@@ -44,7 +44,7 @@
     
 
     <div class="measure-button">
-      <button class="button button-block button-balanced" ui-sref="measuring">
+      <button class="button button-block button-balanced" ng-click="storeWeight()">
       START
       </button>
     </div>

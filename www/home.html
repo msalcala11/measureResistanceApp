@@ -30,7 +30,7 @@
       <i class="icon ion-bluetooth"></i>
       Connect<span ng-show="connected">ed</span><span ng-hide="connected">ing..</span>
     </p>
-
+<!-- 
     <div class="knob-container" ng-show='knobInitiated'>
          <input class="knob" data-width="200"
           data-fgColor="#35BCE4"
@@ -40,7 +40,9 @@
           value="{{currentValue}}"
           data-readOnly=true
           >
-    </div>
+    </div> -->
+
+    <canvas class="knob-container loader"></canvas>
 
     <div class="measure-button">
       <button class="button button-block button-positive" ui-sref="enterWeight" ng-disabled="!connected">
