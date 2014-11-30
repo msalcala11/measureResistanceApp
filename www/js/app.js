@@ -77,6 +77,7 @@ angular.module('starter', ['ionic'])
 
   $rootScope.gotMessage = function(data){
     // This function gets called when we receive the resistance measurement from the arduino
+    console.log("got gotMessage called")
     console.log(data)
     $rootScope.newResistance = parseFloat(data);
     // console.log("about to write back")
@@ -213,6 +214,8 @@ angular.module('starter', ['ionic'])
 .controller('measuringCtrl', function($scope, $rootScope, $timeout, $interval, $state) {
   console.log($rootScope.currentValue)
 
+  delete $rootScope.newResistance;
+
   bluetoothSerial.write("start_test", function(){
       console.log("started_test");
     }, function(){
@@ -267,7 +270,14 @@ angular.module('starter', ['ionic'])
 
   $scope.cancelMeasurement = function(){
     $interval.cancel(incrementProgress);
-    $state.go('home');
+    console.log("cancelMeasurement called")
+    bluetoothSerial.write("cancel_test", function(){
+      console.log("canceled test");
+      $state.go('home');
+    }, function(){
+      console.log("failed to cancel_test");
+    });
+    
   }
 
 })
