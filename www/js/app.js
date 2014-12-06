@@ -239,16 +239,20 @@ angular.module('starter', ['ionic'])
 
       console.log("about to compute regression")
       // Define our leanMass regression coefficients
-      var B0 = -13.36117;
-      var B1 = 0.0085998;
-      var B2 = 0.5964701;
+      // var B0 = -13.36117;
+      // var B1 = 0.0085998;
+      // var B2 = 0.5964701;
+
+      var B0 = 1.207298;
+      var B1 = -0.0047503;
+      var B2 = 0.5542703 ;
 
       // Define our waterMass regression coefficients
       var C0 = 14.35698;
       var C1 = -0.0079816;
       var C2 = 0.3226745;
 
-      $rootScope.newResistance = 600;
+      //$rootScope.newResistance = 600;
       console.log("$rootScope.weight: " + $rootScope.weight);
       //$rootScope.weight = 130;
       // Let's compute the regressionjquery.classyloader.js
@@ -260,13 +264,14 @@ angular.module('starter', ['ionic'])
       console.log("fatMass: " + fatMass)
 
       // set a random value for the new body fat percentage from (0-100)
-      $rootScope.currentValue = Math.floor(100*(fatMass/($rootScope.weight - waterMass))); //Math.floor(Math.random() * 100) + 1;
+      $rootScope.currentValue = Math.round(100*(fatMass/($rootScope.weight - waterMass))); //Math.floor(Math.random() * 100) + 1;
+      //$rootScope.currentValue = 21.9;
       console.log("fatPercentage: " + $rootScope.currentValue);
       delete $rootScope.newResistance;
       // Go back to the home state to display the new bodyfat percentage
       $state.go('home');
     }
-  }, 100)
+  }, 80)
 
   $scope.cancelMeasurement = function(){
     $interval.cancel(incrementProgress);
