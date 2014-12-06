@@ -80,12 +80,6 @@ angular.module('starter', ['ionic'])
     console.log("got gotMessage called")
     console.log(data)
     $rootScope.newResistance = parseFloat(data);
-    // console.log("about to write back")
-    // bluetoothSerial.write("got it!", function(){
-    //   console.log("wrote");
-    // }, function(){
-    //   console.log("failed write");
-    // });
   }
 
   $rootScope.connnectSuccess = function (){
@@ -136,47 +130,8 @@ angular.module('starter', ['ionic'])
     if(!$rootScope.connected)
       $rootScope.initiateConnection();
 
-    // // Let's scan the environment for a ble device with the name "BLE Shield"
-    // bluetoothSerial.list(function(devices) {
-    //     console.log("in success callback")
-    //     var bleShield = _.findWhere(devices, {name: "BLE Shield"});
-
-    //     // JSON output of bleShield looks like this:
-    //     //[{"id":"55174456-779D-D60E-82D4-EA927560790C","name":"BLE Shield","uuid":"55174456-779D-D60E-82D4-EA927560790C"}]
-        
-    //     // Now that we have found the bleShield and have its id, lets connect!
-    //     bluetoothSerial.connect(bleShield.uuid, $scope.connnectSuccess, connectFailure);
-    // }, function(){
-    //   console.log("in fail callback")
-    // });
-
   }, 1000)
 
-
-  // $scope.gotMessage = function(data){
-  //   // This function gets called when we receive the resistance measurement from the arduino
-  //   console.log(data)
-  //   $rootScope.newResistance = data;
-  //   // console.log("about to write back")
-  //   // bluetoothSerial.write("got it!", function(){
-  //   //   console.log("wrote");
-  //   // }, function(){
-  //   //   console.log("failed write");
-  //   // });
-  // }
-
-  // $scope.connnectSuccess = function (){
-  //   console.log("We connected via bluetooth");
-  //   console.log("attempting to subscribez")
-
-  //   // $rootScope.connected = true;
-  //   // $scope.connected = true;
-  //   console.log("connected: " + $rootScope.connected)
-
-  //   bluetoothSerial.subscribe("\n", $scope.gotMessage, function(){
-  //     console.log("got an error..");
-  //   });
-  // }
 
   function connectFailure(){
     console.log("Could not connect");
